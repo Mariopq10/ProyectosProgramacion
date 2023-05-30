@@ -94,7 +94,6 @@ public class ElementoLista extends JPanel {
 		gbc_buttonDescripcion.gridx = 5;
 		gbc_buttonDescripcion.gridy = 2;
 		add(buttonDescripcion, gbc_buttonDescripcion);
-
 	}
 
 	private ImageIcon convertirAGris(String rutaImagen) {
