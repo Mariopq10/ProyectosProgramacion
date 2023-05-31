@@ -58,7 +58,7 @@ public class ElementoLista extends JPanel {
 		add(labelUsuario, gbc_labelUsuario);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(capitulo.loadImage(capitulo.getRutaRelativa()));
+		lblNewLabel.setIcon(capitulo.cargarImagen(capitulo.getRutaRelativa()));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridheight = 2;
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -67,7 +67,7 @@ public class ElementoLista extends JPanel {
 		gbc_lblNewLabel.gridy = 1;
 		add(lblNewLabel, gbc_lblNewLabel);
 
-		JButton buttonDescripcion = new JButton("Descripción");
+		JButton buttonDescripcion = new JButton("Ver en detalle");
 		buttonDescripcion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane ventanaEmergente = new JOptionPane();
@@ -101,9 +101,8 @@ public class ElementoLista extends JPanel {
 			e.printStackTrace();
 		}
 		ColorConvertOp colorConvert = new ColorConvertOp(ColorSpace.getInstance(ColorSpace.CS_GRAY), null);
-		// Aplica la conversión a escala de grises a la imagen
-		BufferedImage grayscaleImage = colorConvert.filter(imagen, null);
-		ImageIcon icon = new ImageIcon(grayscaleImage.getScaledInstance(600, 337, Image.SCALE_SMOOTH));
+		BufferedImage imagenGris = colorConvert.filter(imagen, null);
+		ImageIcon icon = new ImageIcon(imagenGris.getScaledInstance(600, 337, Image.SCALE_SMOOTH));
 		return icon;
 
 	}

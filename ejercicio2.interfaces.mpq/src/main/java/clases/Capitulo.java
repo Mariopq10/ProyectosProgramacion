@@ -53,7 +53,7 @@ public class Capitulo {
 	}
 
 
-	public ImageIcon loadImage(String path) {
+	public ImageIcon cargarImagen(String path) {
 		BufferedImage imagen = null;
 		try {
 			imagen = ImageIO.read(new File(path));
