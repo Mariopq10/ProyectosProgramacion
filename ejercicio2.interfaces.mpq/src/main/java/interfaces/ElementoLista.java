@@ -3,6 +3,8 @@ package interfaces;
 import javax.swing.JPanel;
 import javax.swing.RootPaneContainer;
 
+import clases.Capitulo;
+
 import java.awt.GridBagLayout;
 import java.awt.Image;
 
@@ -30,15 +32,9 @@ import java.awt.event.ActionEvent;
 
 public class ElementoLista extends JPanel {
 	private Ventana ventana;
-	private String ruta;
-	private String tituloElemento;
-	private String descripcionElemento;
 
-	public ElementoLista(Ventana v, String titulo, String descripcion, ImageIcon imagen, String path) {
+	public ElementoLista(Ventana v, final Capitulo capitulo) {
 		this.ventana = v;
-		this.ruta = path;
-		this.tituloElemento = titulo;
-		this.descripcionElemento = descripcion;
 		GridBagLayout gridBagLayout = new GridBagLayout();
 		gridBagLayout.columnWidths = new int[] { 40, 0, 0, 0, 40, 64, 30, 0 };
 		gridBagLayout.rowHeights = new int[] { 19, 50, 50, 50, 0 };
@@ -46,7 +42,7 @@ public class ElementoLista extends JPanel {
 		gridBagLayout.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		setLayout(gridBagLayout);
 
-		JLabel labelTitulo = new JLabel("" + titulo);
+		JLabel labelTitulo = new JLabel("" + capitulo.getTitulo());
 		labelTitulo.setFont(new Font("Trebuchet MS", Font.BOLD | Font.ITALIC, 13));
 		GridBagConstraints gbc_labelEmail = new GridBagConstraints();
 		gbc_labelEmail.insets = new Insets(0, 0, 5, 5);
@@ -54,7 +50,7 @@ public class ElementoLista extends JPanel {
 		gbc_labelEmail.gridy = 1;
 		add(labelTitulo, gbc_labelEmail);
 
-		JLabel labelUsuario = new JLabel("" + descripcion);
+		JLabel labelUsuario = new JLabel("" + capitulo.getDescripcion());
 		GridBagConstraints gbc_labelUsuario = new GridBagConstraints();
 		gbc_labelUsuario.insets = new Insets(0, 0, 5, 5);
 		gbc_labelUsuario.gridx = 1;
@@ -62,7 +58,7 @@ public class ElementoLista extends JPanel {
 		add(labelUsuario, gbc_labelUsuario);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(imagen);
+		lblNewLabel.setIcon(capitulo.loadImage(capitulo.getRutaRelativa()));
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
 		gbc_lblNewLabel.gridheight = 2;
 		gbc_lblNewLabel.anchor = GridBagConstraints.EAST;
@@ -75,16 +71,16 @@ public class ElementoLista extends JPanel {
 		buttonDescripcion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JOptionPane ventanaEmergente = new JOptionPane();
-				ImageIcon fondo = convertirAGris(ruta);
+				ImageIcon fondo = convertirAGris(capitulo.getRutaRelativa());
 				JLabel backgroundLabel = new JLabel(fondo);
 				JPanel panel = new JPanel();
 				panel.add(backgroundLabel);
-				JLabel titleLabel = new JLabel(tituloElemento + ".");
-				JLabel descriptionLabel = new JLabel(descripcionElemento);
+				JLabel titleLabel = new JLabel(capitulo.getTitulo() + ".");
+				JLabel descriptionLabel = new JLabel(capitulo.getDescripcion());
 				panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 				panel.add(titleLabel);
 				panel.add(descriptionLabel);
-				ventanaEmergente.showMessageDialog(null, panel, tituloElemento, JOptionPane.PLAIN_MESSAGE);
+				ventanaEmergente.showMessageDialog(null, panel, capitulo.getTitulo(), JOptionPane.PLAIN_MESSAGE);
 				ventanaEmergente.setSize(500, 400);
 				ventanaEmergente.setVisible(true);
 			}
