@@ -2,16 +2,27 @@ package interfaces;
 
 import javax.swing.JPanel;
 import java.awt.GridBagLayout;
+import java.awt.Image;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.color.ColorSpace;
 import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ImageIcon;
+
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 
 public class PanelPrincipal extends JPanel {
@@ -36,16 +47,25 @@ public class PanelPrincipal extends JPanel {
 		gbc_lblNewLabel.gridy = 0;
 		add(lblNewLabel, gbc_lblNewLabel);
 
-		JButton botonVerImagen = new JButton("Ver Imagen");
+		final JButton botonVerImagen = new JButton("Ver Imagen");
 		botonVerImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if (buttonGroup.getSelection() == null) {
 	                    JOptionPane.showMessageDialog(PanelPrincipal.this,
 	                            "Error: Debes elegir una imagen", "Error", JOptionPane.ERROR_MESSAGE);
 	                } else {
-	                    JRadioButton botonSeleccionado = (JRadioButton) buttonGroup.getSelection();
+	                	JRadioButton botonSeleccionado =  (JRadioButton) buttonGroup.getSelection();
 	                    String imagenEscogida = botonSeleccionado.getText();
-	                    
+
+	                    // Obtener la ruta de la imagen correspondiente al RadioButton seleccionado
+	                    String rutaImagen = imagenEscogida + ".jpg";
+
+	                    // Crear la instancia de la segunda pantalla y pasar la ruta de la imagen
+	                    PanelSecundario panelSecundario = new PanelSecundario(ventana, rutaImagen);
+
+	                    // Configurar la ventana principal para mostrar la segunda pantalla
+	                    ventana.setContentPane(panelSecundario);
+	                    ventana.validate();
 	                }
 	            }
 	        });
@@ -90,5 +110,16 @@ public class PanelPrincipal extends JPanel {
 		gbc_botonImagen4.gridy = 2;
 		add(botonImagen4, gbc_botonImagen4);
 	}
+	private ImageIcon verImagen(String rutaImagen) {
+		BufferedImage imagen = null;
+		try {
+			imagen = ImageIO.read(new File(rutaImagen));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ImageIcon icon = new ImageIcon(imagen.getScaledInstance(600, 337, Image.SCALE_SMOOTH));
+		return icon;
 
+	}
 }
