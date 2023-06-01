@@ -14,8 +14,10 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.ImageIcon;
 
 import java.awt.event.ActionListener;
@@ -23,11 +25,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PanelPrincipal extends JPanel {
 	private Ventana ventana;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+
 
 	public PanelPrincipal(Ventana v) {
 		this.ventana = v;
@@ -46,38 +52,6 @@ public class PanelPrincipal extends JPanel {
 		gbc_lblNewLabel.gridx = 0;
 		gbc_lblNewLabel.gridy = 0;
 		add(lblNewLabel, gbc_lblNewLabel);
-
-		final JButton botonVerImagen = new JButton("Ver Imagen");
-		botonVerImagen.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 if (buttonGroup.getSelection() == null) {
-	                    JOptionPane.showMessageDialog(PanelPrincipal.this,
-	                            "Error: Debes elegir una imagen", "Error", JOptionPane.ERROR_MESSAGE);
-	                } else {
-	                	JRadioButton botonSeleccionado =  (JRadioButton) buttonGroup.getSelection();
-	                    String imagenEscogida = botonSeleccionado.getText();
-
-	                    // Obtener la ruta de la imagen correspondiente al RadioButton seleccionado
-	                    String rutaImagen = imagenEscogida + ".jpg";
-
-	                    // Crear la instancia de la segunda pantalla y pasar la ruta de la imagen
-	                    PanelSecundario panelSecundario = new PanelSecundario(ventana, rutaImagen);
-
-	                    // Configurar la ventana principal para mostrar la segunda pantalla
-	                    ventana.setContentPane(panelSecundario);
-	                    ventana.validate();
-	                }
-	            }
-	        });
-				
-		GridBagConstraints gbc_botonVerImagen = new GridBagConstraints();
-		gbc_botonVerImagen.fill = GridBagConstraints.HORIZONTAL;
-		gbc_botonVerImagen.gridwidth = 6;
-		gbc_botonVerImagen.insets = new Insets(0, 0, 5, 0);
-		gbc_botonVerImagen.gridx = 0;
-		gbc_botonVerImagen.gridy = 1;
-		add(botonVerImagen, gbc_botonVerImagen);
-
 		JRadioButton botonImagen1 = new JRadioButton("Imagen 1");
 		buttonGroup.add(botonImagen1);
 		GridBagConstraints gbc_botonImagen1 = new GridBagConstraints();
@@ -109,7 +83,40 @@ public class PanelPrincipal extends JPanel {
 		gbc_botonImagen4.gridx = 4;
 		gbc_botonImagen4.gridy = 2;
 		add(botonImagen4, gbc_botonImagen4);
+		final JButton botonVerImagen = new JButton("Ver Imagen");
+		botonVerImagen.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				JRadioButton botonSeleccionado = null;
+
+				Enumeration<AbstractButton> buttons = buttonGroup.getElements();
+				while (buttons.hasMoreElements()) {
+					AbstractButton button = buttons.nextElement();
+					if (button.isSelected()) {
+						botonSeleccionado = (JRadioButton) button;
+						break;
+					}
+				}
+				if (buttonGroup.getSelection() == null) {
+					JOptionPane.showMessageDialog(PanelPrincipal.this, "Error: Debes elegir una imagen", "Error",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					String ruta = botonSeleccionado.getText();
+					ventana.cambiarAPantalla(PanelSecundario.class, ruta+".jpg");
+				}
+			}
+		});
+
+		GridBagConstraints gbc_botonVerImagen = new GridBagConstraints();
+		gbc_botonVerImagen.fill = GridBagConstraints.HORIZONTAL;
+		gbc_botonVerImagen.gridwidth = 6;
+		gbc_botonVerImagen.insets = new Insets(0, 0, 5, 0);
+		gbc_botonVerImagen.gridx = 0;
+		gbc_botonVerImagen.gridy = 1;
+		add(botonVerImagen, gbc_botonVerImagen);
+
 	}
+
 	private ImageIcon verImagen(String rutaImagen) {
 		BufferedImage imagen = null;
 		try {
