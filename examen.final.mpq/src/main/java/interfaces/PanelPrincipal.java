@@ -45,6 +45,7 @@ public class PanelPrincipal extends JPanel {
 	                } else {
 	                    JRadioButton botonSeleccionado = (JRadioButton) buttonGroup.getSelection();
 	                    String imagenEscogida = botonSeleccionado.getText();
+	                    
 	                }
 	            }
 	        });
