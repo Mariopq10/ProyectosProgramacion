@@ -40,26 +40,15 @@ public class PanelPrincipal extends JPanel {
 		botonVerImagen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 if (buttonGroup.getSelection() == null) {
-	                    JOptionPane.showMessageDialog(v.this,
+	                    JOptionPane.showMessageDialog(PanelPrincipal.this,
 	                            "Error: Debes elegir una imagen", "Error", JOptionPane.ERROR_MESSAGE);
 	                } else {
-	                    // Obtener el RadioButton seleccionado
-	                    JRadioButton selectedRadioButton = (JRadioButton) buttonGroup.getSelection();
-
-	                    // Obtener el texto del RadioButton seleccionado
-	                    String selectedImage = selectedRadioButton.getText();
-
-	                    // Abrir la segunda ventana y pasar la información del RadioButton seleccionado
-	                    SegundaVentana segundaVentana = new SegundaVentana(selectedImage);
-	                    segundaVentana.setVisible(true);
+	                    JRadioButton botonSeleccionado = (JRadioButton) buttonGroup.getSelection();
+	                    String imagenEscogida = botonSeleccionado.getText();
 	                }
 	            }
 	        });
 				
-				
-				
-			}
-		});
 		GridBagConstraints gbc_botonVerImagen = new GridBagConstraints();
 		gbc_botonVerImagen.fill = GridBagConstraints.HORIZONTAL;
 		gbc_botonVerImagen.gridwidth = 6;
